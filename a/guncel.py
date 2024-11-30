@@ -2,7 +2,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import cv2
 import numpy as np
 import time
-net = cv2.dnn.readNet(r"C:\Users\toygar\Documents\ihaarayuz\a\yolo\yolov4.weights", r"C:\Users\toygar\Documents\ihaarayuz\a\yolo\yolov4.cfg")
+weights_path = r"/home/toygar/Belgeler/iha-arayuz/a/yolo/yolov4.weights"
+cfg_path = r"/home/toygar/Belgeler/iha-arayuz/a/yolo/yolov4.cfg"
+net= net = cv2.readnet(weights_path, cfg_path)
 classes = []
 with open(r"C:\Users\toygar\Documents\ihaarayuz\a\yolo\coco.names", "r") as f:
     classes = [line.strip() for line in f.readlines()]
