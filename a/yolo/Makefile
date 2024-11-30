@@ -1,0 +1,3 @@
+GPU=1
+CUDNN=1
+OPENCV=1
