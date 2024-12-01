@@ -2,11 +2,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import cv2
 import numpy as np
 import time
-weights_path = r"/home/toygar/Belgeler/iha-arayuz/a/yolo/yolov4.weights"
-cfg_path = r"/home/toygar/Belgeler/iha-arayuz/a/yolo/yolov4.cfg"
-net= net = cv2.readnet(weights_path, cfg_path)
+weights_path = r"/home/toygar/iha-arayuz/a/yolo/yolov4.weights"
+cfg_path = r"/home/toygar/iha-arayuz/a/yolo/yolov4.cfg"
+net= net = cv2.dnn.readNet(weights_path, cfg_path)
 classes = []
-with open(r"C:\Users\toygar\Documents\ihaarayuz\a\yolo\coco.names", "r") as f:
+with open(r"/home/toygar/iha-arayuz/a/yolo/coco.names", "r") as f:
     classes = [line.strip() for line in f.readlines()]
 
 cap = cv2.VideoCapture(0)
@@ -23,12 +23,12 @@ class Ui_MainWindow(object):
         super().__init__()
 
         # Initialize YOLO model
-        self.net = cv2.dnn.readNet(r"C:\Users\toygar\Documents\ihaarayuz\a\yolo\yolov4.weights", 
-                                   r"C:\Users\toygar\Documents\ihaarayuz\a\yolo\yolov4.cfg")
+        self.net = cv2.dnn.readNet(r"/Users/toygar/iha-arayuz/a/yolo/yolov4.weights", 
+                                   r"/Users/toygar/iha-arayuz/a/yolo/yolov4.cfg")
         net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)  # CUDA backend kullan
         net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)    # CUDA'yı hedef olarak belirle
         self.classes = []
-        with open(r"C:\Users\toygar\Documents\ihaarayuz\a\yolo\coco.names", "r") as f:
+        with open(r"/Users/toygar/iha-arayuz/a/yolo/coco.names", "r") as f:
             self.classes = [line.strip() for line in f.readlines()]
 
         self.cap = cv2.VideoCapture(0)
