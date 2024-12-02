@@ -9,11 +9,6 @@ class Ui_MainWindow(object):
     def __init__(self):
         super().__init__()
 
-        self.cap = cv2.VideoCapture(2)
-        if not self.cap.isOpened():
-            print("Error: Could not open video stream or file")
-            exit()
-
         # Initialize FPS calculation
         self.starting_time = time.time()
         self.frame_id = 0
@@ -348,7 +343,10 @@ class Ui_MainWindow(object):
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.guncelle)
         self.timer.start(30)
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(1)
+        if not self.cap.isOpened():
+            print("Error: Could not open video stream or file")
+            exit()
     def guncelle(self):
         ret, frame = self.cap.read()
         if not ret:
