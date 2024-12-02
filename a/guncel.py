@@ -23,12 +23,12 @@ class Ui_MainWindow(object):
         super().__init__()
 
         # Initialize YOLO model
-        self.net = cv2.dnn.readNet(r"/Users/toygar/iha-arayuz/a/yolo/yolov4.weights", 
-                                   r"/Users/toygar/iha-arayuz/a/yolo/yolov4.cfg")
+        self.net = cv2.dnn.readNet(r"/home/toygar/iha-arayuz/a/yolo/yolov4.weights", 
+                                   r"/home/toygar/iha-arayuz/a/yolo/yolov4.cfg")
         net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)  # CUDA backend kullan
         net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)    # CUDA'yı hedef olarak belirle
         self.classes = []
-        with open(r"/Users/toygar/iha-arayuz/a/yolo/coco.names", "r") as f:
+        with open(r"/home/toygar/iha-arayuz/a/yolo/coco.names", "r") as f:
             self.classes = [line.strip() for line in f.readlines()]
 
         self.cap = cv2.VideoCapture(0)
