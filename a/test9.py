@@ -8,8 +8,8 @@ from queue import Queue
 class Ui_MainWindow(object):
     def __init__(self):
         super().__init__()
-        self.cap = cv2.VideoCapture(0)
-        self.cap.set(cv2.CAP_PROP_FPS, 60)
+        self.cap = cv2.VideoCapture(1)
+        self.cap.set(cv2.CAP_PROP_FPS, 60) # Kamera fps değiştirme
         if not self.cap.isOpened():
             print("Error: Could not open video stream or file")
             exit()
@@ -282,7 +282,7 @@ class Ui_MainWindow(object):
         self.label_37.setText("")
         self.label_37.setObjectName("label_37")
         self.label_38 = QtWidgets.QLabel(self.centralwidget)
-        self.label_38.setGeometry(QtCore.QRect(26, 82, 900, 911))
+        self.label_38.setGeometry(QtCore.QRect(26, 82, 881, 911))
         self.label_38.setStyleSheet("background-color: black;")
         self.label_38.setText("")
         self.label_38.setObjectName("label_38")
@@ -369,8 +369,8 @@ class Ui_MainWindow(object):
 
     def yolo_process(self):
 
-        # model = YOLO('yolov8n.pt') # Yolov8 
-        model = YOLO('yolo11n-pose.pt') # Sadece insan
+        model = YOLO('yolov8n.pt') # Yolov8 
+        # model = YOLO('yolo11n-pose.pt') # Sadece insan
         # model = YOLO('yolo11n-seg.pt') # Tüm nesneler ama fps düşük
         while True:
             frame = self.frame_queue.get()
