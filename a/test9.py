@@ -282,7 +282,7 @@ class Ui_MainWindow(object):
         self.label_37.setText("")
         self.label_37.setObjectName("label_37")
         self.label_38 = QtWidgets.QLabel(self.centralwidget)
-        self.label_38.setGeometry(QtCore.QRect(26, 82, 881, 911))
+        self.label_38.setGeometry(QtCore.QRect(26, 82, 900, 911))
         self.label_38.setStyleSheet("background-color: black;")
         self.label_38.setText("")
         self.label_38.setObjectName("label_38")
@@ -368,16 +368,18 @@ class Ui_MainWindow(object):
         self.label_36.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">00:00:00</p></body></html>"))
 
     def yolo_process(self):
-        model = YOLO('yolov8n.pt') # Sadece insan
+
+        # model = YOLO('yolov8n.pt') # Yolov8 
+        model = YOLO('yolo11n-pose.pt') # Sadece insan
         # model = YOLO('yolo11n-seg.pt') # Tüm nesneler ama fps düşük
         while True:
             frame = self.frame_queue.get()
             if frame is None:
                 break
             start_time = time.time()
-            # processed_frame = model(frame)[0].plot()
-            results = model.track(frame)[0]
-            processed_frame = results.plot() 
+            processed_frame = model(frame)[0].plot()
+            # results = model.track(frame)[0]
+            # processed_frame = results.plot() 
             end_time = time.time()
 
             # self.processed_queue.put(processed_frame)
