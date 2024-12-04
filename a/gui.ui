@@ -500,22 +500,12 @@
     <property name="geometry">
      <rect>
       <x>1540</x>
-      <y>380</y>
+      <y>320</y>
       <width>351</width>
-      <height>91</height>
+      <height>151</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_4">
-     <item row="1" column="1">
-      <widget class="QLabel" name="label_34">
-       <property name="styleSheet">
-        <string notr="true">color: white;</string>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="0">
       <widget class="QPushButton" name="pushButton_9">
        <property name="styleSheet">
@@ -546,16 +536,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="label_33">
-       <property name="styleSheet">
-        <string notr="true">color: white;</string>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_31">
        <property name="styleSheet">
@@ -564,6 +544,50 @@
        <property name="text">
         <string>PORT</string>
        </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboBox">
+       <property name="styleSheet">
+        <string notr="true">color: white; margin-left: 10px; height: 20;</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>13123,</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>dwdw</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>wdwdwd</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboBox_2">
+       <property name="styleSheet">
+        <string notr="true">color: white; margin-left: 10px; height: 20;</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>13123,</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>dwdw</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>wdwdwd</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>

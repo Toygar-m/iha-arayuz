@@ -1,20 +1,19 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import cv2
-import numpy as np
-import time
+import cv2, time, sys, os, signal
 from ultralytics import YOLO
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, freeze_support
 
 
-def yolo_process(queue, output_queue):
-    """YOLO modelini çalıştıran süreç."""
+def yolo_process(queue, output_queue, fps_queue):
     model = YOLO('yolov8n.pt')
     while True:
-        frame = queue.get()  # Kuyruktan çerçeve al
-        if frame is None:  # None gönderilirse süreç sonlanır
-            break
-        processed_frame = model(frame)[0].plot()  # YOLO ile işleme
-        output_queue.put(processed_frame)  # İşlenmiş çerçeveyi çıkış kuyruğuna koy
+        frame = queue.get()
+        if frame is None: break
+        start_time = time.time()
+        processed_frame = model(frame)[0].plot()
+        end_time = time.time()
+        output_queue.put(processed_frame)
+        fps_queue.put(1 / (end_time - start_time))
 
 
 class Ui_MainWindow(object):
@@ -28,14 +27,13 @@ class Ui_MainWindow(object):
         self.starting_time = time.time()
         self.frame_id = 0
 
-        # Multiprocessing Kuyrukları
-        self.frame_queue = Queue(maxsize=1)  # Çerçeve gönderim kuyruğu
-        self.processed_queue = Queue(maxsize=1)  # İşlenmiş çerçeve kuyruğu
+        self.frame_queue = Queue(maxsize=1) 
+        self.processed_queue = Queue(maxsize=1)  
+        self.fps_queue = Queue(maxsize=1)
 
-        # YOLO Süreci
-        self.yolo_process = Process(target=yolo_process, args=(self.frame_queue, self.processed_queue))
+        self.yolo_process = Process(target=yolo_process, args=(self.frame_queue, self.processed_queue, self.fps_queue))
         self.yolo_process.start()
-
+        self.current_fps = 0
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1920, 1080)
@@ -295,6 +293,7 @@ class Ui_MainWindow(object):
         self.label_38.setStyleSheet("background-color: black;")
         self.label_38.setText("")
         self.label_38.setObjectName("label_38")
+        
         self.label_8.raise_()
         self.label.raise_()
         self.label_2.raise_()
@@ -377,35 +376,21 @@ class Ui_MainWindow(object):
         
     def guncelle(self):
         ret, frame = self.cap.read()
-        if not ret:
-            return
-
-        self.frame_id += 1
-        elapsed_time = time.time() - self.starting_time
-        fps = self.frame_id / elapsed_time
-        cv2.putText(frame, "FPS: " + str(round(fps, 2)), (10, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 255, 255), 3)
-
-        if not self.frame_queue.full():
-            self.frame_queue.put(frame)
-
+        if not ret: return
+        if not self.frame_queue.full(): self.frame_queue.put(frame)
         if not self.processed_queue.empty():
             processed_frame = self.processed_queue.get()
+
+            if not self.fps_queue.empty(): self.current_fps = self.fps_queue.get()
+
+            cv2.putText(processed_frame, f"FPS: {self.current_fps:.2f}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA, )
+
             rgb_frame = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
             h, w, ch = rgb_frame.shape
-            bytes_per_line = ch * w
-            self.label_38.setPixmap(
-                QtGui.QPixmap.fromImage(QtGui.QImage(rgb_frame.data, w, h, bytes_per_line, QtGui.QImage.Format_RGB888))
-            )
-
-    def closeEvent(self, event):
-        """Pencere kapatıldığında süreçleri temizle."""
-        self.cap.release()
-        self.frame_queue.put(None)  # YOLO sürecine sonlanma sinyali gönder
-        self.yolo_process.join()  # Sürecin bitmesini bekle
-
+            self.label_38.setPixmap(QtGui.QPixmap.fromImage(QtGui.QImage(rgb_frame.data, w, h, ch * w, QtGui.QImage.Format_RGB888)))    
 
 if __name__ == "__main__":
-    import sys
+    freeze_support()
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
