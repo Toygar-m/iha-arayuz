@@ -8,7 +8,7 @@ from queue import Queue
 class Ui_MainWindow(object):
     def __init__(self):
         super().__init__()
-        self.cap = cv2.VideoCapture(1)
+        self.cap = cv2.VideoCapture(0)
         self.cap.set(cv2.CAP_PROP_FPS, 60) # Kamera fps değiştirme
         if not self.cap.isOpened():
             print("Error: Could not open video stream or file")
@@ -378,12 +378,8 @@ class Ui_MainWindow(object):
                 break
             start_time = time.time()
             processed_frame = model(frame)[0].plot()
-            # results = model.track(frame)[0]
-            # processed_frame = results.plot() 
             end_time = time.time()
 
-            # self.processed_queue.put(processed_frame)
-            # self.fps_queue.put(1 / (end_time - start_time))
             self.processed_queue.put(processed_frame)
             self.fps_queue.put(1 / (end_time - start_time))
 

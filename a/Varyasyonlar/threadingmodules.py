@@ -9,7 +9,7 @@ class Ui_MainWindow(object):
     def __init__(self):
         super().__init__()
         self.cap = cv2.VideoCapture(0)
-        self.cap.set(cv2.CAP_PROP_FPS, 60)
+        self.cap.set(cv2.CAP_PROP_FPS, 60) # Kamera fps değiştirme
         if not self.cap.isOpened():
             print("Error: Could not open video stream or file")
             exit()
@@ -368,29 +368,29 @@ class Ui_MainWindow(object):
         self.label_36.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">00:00:00</p></body></html>"))
 
     def yolo_process(self):
-        model = YOLO('yolov8n.pt')
+
+        # model = YOLO('yolov8n.pt') # Yolov8 
+        # model = YOLO('yolo11n-pose.pt') # Sadece insan
+        model = YOLO('yolo11n-seg.pt') # Tüm nesneler ama fps düşük
         while True:
             frame = self.frame_queue.get()
             if frame is None:
                 break
-            start_time = time.time()
             processed_frame = model(frame)[0].plot()
-            end_time = time.time()
-
+            # results = model.track(frame)[0]
+            # processed_frame = results.plot() 
             self.processed_queue.put(processed_frame)
-            self.fps_queue.put(1 / (end_time - start_time))
+            self.fps_queue.put(1 / (time.time() - time.time()))
 
     def guncelle(self):
         ret, frame = self.cap.read()
         if not ret: return
-        if not self.frame_queue.full(): 
-            self.frame_queue.put(frame)
+        if not self.frame_queue.full():  self.frame_queue.put(frame)
 
         if not self.processed_queue.empty():
             processed_frame = self.processed_queue.get()
 
-            if not self.fps_queue.empty(): 
-                self.current_fps = self.fps_queue.get()
+            if not self.fps_queue.empty():  self.current_fps = self.fps_queue.get()
 
             cv2.putText(processed_frame, f"FPS: {self.current_fps:.2f}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 

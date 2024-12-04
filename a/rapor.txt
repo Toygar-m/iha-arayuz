@@ -1,0 +1,16 @@
+Yazılımda karşılaştığımız hatalar:
+
+Qt designer ile gui tasarımını yaptık.
+Qt designer ile yaptığımız gui dosyasını python koduna çevirmek için PyQt5 modülünü kurmamız gerekiyordu ama python 3.13.1 sürümünde kurulmadı bundan dolayı 3.12.7 sürümüne geçtik
+İlk önce darknet yolo sürümünü test ettik.
+Darkneti make etmeyi linux üzerinden başardık ama pyqt5 hata veriyordu bu yüzden windows geçtik arından windows üzerinden make etmeyi denedik ama make etmeyi başlattık ama çok uzun sürdü ve bitmedi 
+Make edilemediğinden dolayı ultralytics modülüne geçiş yaptık 
+Sonradan darknet yerine yolov8 kullanmaya başladık
+Gui python koduna kamerayı entegre ettik ardından yolov8 ile görüntü işlemeyi ekledik
+Düşük fps aldığımızdan dolayı yolov8 ve yolo11 sürümlerini test ettik
+Düşük fps olmasının sebebi gui üzerinen tek çekirdek çalışmasıydı
+Tek çekirdek yerine çoklu çekirdek kullanmak için multiproccessing modülünü denedik
+Bazı hatalar ve kapanmama gibi sorunlar olduğundaun asyncio modülüne geçtik
+Asynio modülünde ise fps normalden daha düşük olduğundan threading modülüne geçtik
+Threading modülünde her şey olması gerektiği gibi oldu ve fps 20 sabit olmakta
+Şimdiye kadar yaptığımız testlet laptop cihazın kamerasıydı bu kamera yerine uzakta olan bir bilgisayara internet üzerinden websocket ile bağlantı kurarak bağlandık
