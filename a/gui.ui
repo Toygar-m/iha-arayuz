@@ -395,7 +395,7 @@
      <item row="2" column="1">
       <widget class="QPushButton" name="pushButton_6">
        <property name="styleSheet">
-        <string notr="true">color: white; height: 35px; margin-left: 10px; </string>
+        <string notr="true">color: white; height: 35; margin-left: 10px</string>
        </property>
        <property name="text">
         <string>AUTO</string>
@@ -477,7 +477,7 @@
      <item row="3" column="0">
       <widget class="QPushButton" name="pushButton_7">
        <property name="styleSheet">
-        <string notr="true">color: white; height: 30; margin-right: 10px</string>
+        <string notr="true">color: white; height: 35; margin-right: 10px</string>
        </property>
        <property name="text">
         <string>ARMED</string>
@@ -487,7 +487,7 @@
      <item row="3" column="1">
       <widget class="QPushButton" name="pushButton_8">
        <property name="styleSheet">
-        <string notr="true">color: white; height: 30; margin-left: 10px</string>
+        <string notr="true">color: white; height: 35; margin-left: 10px</string>
        </property>
        <property name="text">
         <string>DİSARMED</string>
@@ -499,17 +499,17 @@
    <widget class="QWidget" name="gridLayoutWidget_4">
     <property name="geometry">
      <rect>
-      <x>1540</x>
+      <x>1530</x>
       <y>320</y>
       <width>351</width>
-      <height>151</height>
+      <height>171</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_4">
      <item row="2" column="0">
       <widget class="QPushButton" name="pushButton_9">
        <property name="styleSheet">
-        <string notr="true">color: white; height: 30; margin-right: 10px</string>
+        <string notr="true">color: white; height: 35; margin-right: 10px</string>
        </property>
        <property name="text">
         <string>BAĞLAN</string>
@@ -529,7 +529,7 @@
      <item row="2" column="1">
       <widget class="QPushButton" name="pushButton_10">
        <property name="styleSheet">
-        <string notr="true">color: white; height: 30; margin-left: 10px</string>
+        <string notr="true">color: white; height: 35; margin-left: 10px</string>
        </property>
        <property name="text">
         <string>BAĞLANTIYI KES</string>

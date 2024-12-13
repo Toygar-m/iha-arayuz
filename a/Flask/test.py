@@ -1,47 +1,53 @@
 import cv2
+import time
 import websockets
 import asyncio
 import numpy as np
 import base64
 import json
+import os
 
-# Kamera açma
+framecount = 0
 cap = cv2.VideoCapture(0)
 
-# WebSocket sunucu fonksiyonu
 async def send_video(websocket, path=None):
+    global framecount
     try:
         while True:
-            # Kameradan bir kare al
             ret, frame = cap.read()
             if not ret:
                 break
 
-            # Görüntüyü Base64 formatına çevir
-            _, buffer = cv2.imencode('.jpg', frame)
-            jpg_as_text = base64.b64encode(buffer).decode('utf-8')
+            _, buffer = cv2.imencode('.jpeg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
 
-            # JSON formatında gönder
-            message = json.dumps({"image": jpg_as_text})
+            image_size_mb = len(buffer) / (1024 * 1024)
 
-            # WebSocket üzerinden gönder
-            await websocket.send(message)
+            await websocket.send(json.dumps({
+                "image": base64.b64encode(buffer).decode('utf-8'),
+                "time": str(time.time()),
+                "size": round(image_size_mb, 4)
+            }))
 
-            # 0.1 saniye bekle
-            # await asyncio.sleep(0.033)
+            # os.makedirs("sdsa", exist_ok=True)
+            # with open(f"sdsa/{framecount}.jpeg", 'wb') as f:
+            #     f.write(buffer)
+
+            # framecount += 1
+            await asyncio.sleep(0.033)
+
     except websockets.exceptions.ConnectionClosed as e:
         print(f"Connection closed: {e}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
     finally:
-        print("Sunucu bağlantıyı kapattı.")
+        print("Server connection closed.")
 
-# WebSocket server'ı başlat
 async def start_server():
     try:
         server = await websockets.serve(send_video, "192.168.31.252", 6789)
         await server.wait_closed()
     except Exception as e:
-        print(f"Sunucu hatası: {e}")
+        print(f"Server error: {e}")
 
-# Event loop başlat
 if __name__ == "__main__":
     asyncio.run(start_server())
